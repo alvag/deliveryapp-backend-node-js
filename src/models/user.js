@@ -34,4 +34,22 @@ const create = async (user) => {
     ] );
 };
 
-module.exports = { getAll, create };
+const findById = (id, callback) => {
+    const query = `SELECT *
+                   FROM users
+                   WHERE id = $1`;
+
+    return db.oneOrNone( query, id ).then( user => {
+        callback( null, user );
+    } );
+};
+
+const findByEmail = (email) => {
+    const query = `SELECT *
+                   FROM users
+                   WHERE email = $1`;
+
+    return db.oneOrNone( query, email );
+};
+
+module.exports = { getAll, create, findById, findByEmail };

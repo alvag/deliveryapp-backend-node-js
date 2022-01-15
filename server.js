@@ -5,7 +5,10 @@ const http = require( 'http' );
 const server = http.createServer( app );
 const logger = require( 'morgan' );
 const cors = require( 'cors' );
+const passport = require( 'passport' );
+
 const userRoutes = require( './src/routes/userRoutes' );
+const authRoutes = require( './src/routes/authRoutes' );
 
 const port = process.env.PORT || 3000;
 
@@ -15,6 +18,10 @@ app.use( express.urlencoded( {
     extended: true
 } ) );
 app.use( cors() );
+app.use( passport.initialize( {} ) );
+
+
+require( './config/passport' )( passport );
 
 app.disabled( 'x-powered-by' );
 
@@ -22,6 +29,7 @@ app.disabled( 'x-powered-by' );
 
 // routes
 app.use( userRoutes );
+app.use( authRoutes );
 
 server.listen( port, () => {
     console.log( `Servidor corriendo en el puerto ${ port }` );
