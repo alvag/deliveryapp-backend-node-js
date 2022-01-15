@@ -1,4 +1,5 @@
 const db = require( '../../config/config' );
+const bcrypt = require( 'bcryptjs' );
 
 const getAll = () => {
     const query = `SELECT *
@@ -7,7 +8,10 @@ const getAll = () => {
     return db.manyOrNone( query );
 };
 
-const create = (user) => {
+const create = async (user) => {
+
+    const hash = await bcrypt.hash( user.password, 10 );
+
     const query = `INSERT INTO users(email,
                                      name,
                                      lastname,
@@ -24,7 +28,7 @@ const create = (user) => {
         user.lastname,
         user.phone,
         user.image,
-        user.password,
+        hash,
         new Date(),
         new Date()
     ] );
