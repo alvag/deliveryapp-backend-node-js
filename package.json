@@ -4,14 +4,18 @@
   "description": "DeliveryApp backend",
   "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Max Alva",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "cors": "^2.8.5",
+    "dotenv": "^12.0.3",
     "express": "^4.17.2",
     "http": "0.0.1-security",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg-promise": "^10.11.1"
   }
 }

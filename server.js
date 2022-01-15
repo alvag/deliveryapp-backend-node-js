@@ -1,9 +1,11 @@
+require( 'dotenv' ).config();
 const express = require( 'express' );
 const app = express();
 const http = require( 'http' );
 const server = http.createServer( app );
 const logger = require( 'morgan' );
 const cors = require( 'cors' );
+const userRoutes = require( './src/routes/userRoutes' );
 
 const port = process.env.PORT || 3000;
 
@@ -18,14 +20,15 @@ app.disabled( 'x-powered-by' );
 
 // app.set( 'port', port );
 
+// routes
+app.use( userRoutes );
+
 server.listen( port, () => {
     console.log( `Servidor corriendo en el puerto ${ port }` );
 } );
 
-app.get( '/', (req, res) => {
-    res.send( 'DeliveryApp!!' );
-} );
-
-app.use( (err, req, res, next) => {
+/*app.use( (err, req, res, next) => {
     res.status( err.statusCode ).send( err.statusMessage );
-} );
+} );*/
+
+module.exports = { app, server };
