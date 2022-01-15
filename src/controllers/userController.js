@@ -13,6 +13,25 @@ const getAll = async (req, res) => {
     }
 };
 
+const create = async (req, res) => {
+    try {
+        const data = await User.create( req.body );
+        return res.status( 201 ).json( {
+            success: true,
+            message: 'Usuario registrado correctamente',
+            data
+        } );
+    } catch ( error ) {
+        console.log( error );
+        return res.status( 500 ).json( {
+            success: false,
+            message: 'Error al registrar el usuario',
+            error
+        } );
+    }
+};
+
 module.exports = {
-    getAll
+    getAll,
+    create
 };
