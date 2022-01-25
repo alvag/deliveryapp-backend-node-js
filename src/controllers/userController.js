@@ -1,4 +1,6 @@
 const User = require( '../models/user' );
+const Role = require( '../models/role' );
+const jwt = require( 'jsonwebtoken' );
 
 const getAll = async (req, res) => {
     try {
@@ -15,7 +17,21 @@ const getAll = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const data = await User.create( req.body );
+        const { id } = await User.create( req.body );
+
+        await Role.create( id, 1 );
+
+        const { email, name, lastname, phone, image } = req.body;
+
+        const token = jwt.sign( {
+            email, id,
+        }, process.env.JWT_SECRET_KEY, {} );
+
+        const data = {
+            id, name, lastname, email, phone, image,
+            session_token: `JWT ${ token }`
+        };
+
         return res.status( 201 ).json( {
             success: true,
             message: 'Usuario registrado correctamente',
