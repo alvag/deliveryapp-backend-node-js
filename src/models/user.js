@@ -45,9 +45,22 @@ const findById = (id, callback) => {
 };
 
 const findByEmail = (email) => {
-    const query = `SELECT *
-                   FROM users
-                   WHERE email = $1`;
+    const query = `SELECT u.*,
+                          json_agg(
+                                  json_build_object(
+                                          'id', r.id,
+                                          'name', r.name,
+                                          'image', r.image,
+                                          'route', r.route
+                                      )
+                              ) AS roles
+                   FROM users AS u
+                            INNER JOIN user_has_roles AS ur
+                                       ON ur.id_user = u.id
+                            INNER JOIN roles AS r
+                                       ON r.id = ur.id_role
+                   WHERE email = $1
+                   GROUP BY u.id`;
 
     return db.oneOrNone( query, email );
 };

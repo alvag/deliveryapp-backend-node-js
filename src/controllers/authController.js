@@ -9,7 +9,7 @@ const login = async (req, res) => {
         const user = await User.findByEmail( email );
 
         if ( user ) {
-            const { id, name, lastname, phone, image } = user;
+            const { id, name, lastname, phone, image, roles } = user;
 
             const isValidPassword = await bcrypt.compare( password, user.password );
             if ( isValidPassword ) {
@@ -18,7 +18,7 @@ const login = async (req, res) => {
                 }, process.env.JWT_SECRET_KEY, {} );
 
                 const data = {
-                    id, name, lastname, email, phone, image,
+                    id, name, lastname, email, phone, image, roles,
                     session_token: `JWT ${ token }`
                 };
 
