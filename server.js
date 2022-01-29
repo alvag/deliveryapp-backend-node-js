@@ -1,4 +1,8 @@
 require( 'dotenv' ).config();
+
+const write = require( './src/utils/write_service_account' );
+write();
+
 const express = require( 'express' );
 const app = express();
 const http = require( 'http' );
@@ -6,6 +10,13 @@ const server = http.createServer( app );
 const logger = require( 'morgan' );
 const cors = require( 'cors' );
 const passport = require( 'passport' );
+const serviceAccount = require( './serviceAccountKey.json' );
+const fbAdmin = require( 'firebase-admin' );
+
+
+fbAdmin.initializeApp( {
+    credential: fbAdmin.credential.cert( serviceAccount )
+} );
 
 const userRoutes = require( './src/routes/userRoutes' );
 const authRoutes = require( './src/routes/authRoutes' );

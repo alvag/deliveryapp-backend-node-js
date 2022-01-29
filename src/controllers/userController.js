@@ -1,6 +1,7 @@
 const User = require( '../models/user' );
 const Role = require( '../models/role' );
 const jwt = require( 'jsonwebtoken' );
+const storage = require( '../utils/cloud_storage' );
 
 const getAll = async (req, res) => {
     try {
@@ -47,8 +48,41 @@ const create = async (req, res) => {
     }
 };
 
+const update = async (req, res) => {
+    try {
+        const user = JSON.parse( req.body.user );
+        const { files = [] } = req;
+
+        if ( files.length ) {
+            const imageName = `image_${ Date.now() }`;
+            const url = await storage( files[0], imageName );
+
+            if ( url ) {
+                user.image = url;
+            }
+        }
+
+        await User.update( user );
+
+        return res.status( 200 ).json( {
+            success: true,
+            message: 'Usuario actualizado correctamente',
+            data: user
+        } );
+
+    } catch ( error ) {
+        console.log( error );
+        return res.status( 500 ).json( {
+            success: false,
+            message: 'Error al actualizar los datos',
+            error
+        } );
+    }
+};
+
 
 module.exports = {
     getAll,
-    create
+    create,
+    update
 };

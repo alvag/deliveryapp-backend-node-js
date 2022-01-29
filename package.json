@@ -4,22 +4,27 @@
   "description": "DeliveryApp backend",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon server.js --ignore serviceAccountKey.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Max Alva",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^5.18.1",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.7.2",
     "cors": "^2.8.5",
     "dotenv": "^12.0.3",
     "express": "^4.17.2",
+    "firebase-admin": "^10.0.2",
     "http": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
+    "multer": "^1.4.4",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
-    "pg-promise": "^10.11.1"
+    "pg-promise": "^10.11.1",
+    "util": "^0.12.4",
+    "uuid": "^8.3.2"
   }
 }
